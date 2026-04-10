@@ -216,10 +216,24 @@
 
         <div class="card">
           <h3 class="card-title"><i class='bx bx-calendar-event'></i> Listado de Reservas</h3>
+          <div style="display: flex; gap: 10px; margin-bottom: 1.5rem;">
+            <button id="btn-select-all-res" class="primary-btn" style="background: var(--secondary); color: var(--text-main);">
+              <i class='bx bx-check-double'></i> Seleccionar Todo
+            </button>
+            <button id="btn-deselect-all-res" class="primary-btn" style="background: var(--secondary); color: var(--text-main);">
+              <i class='bx bx-x'></i> Deseleccionar Todo
+            </button>
+            <button id="btn-charge-reservations" class="primary-btn" style="background: linear-gradient(135deg, #10b981, #059669);">
+              <i class='bx bx-credit-card'></i> Cobrar Reservas Seleccionadas
+            </button>
+          </div>
           <div class="table-container">
             <table id="reservations-table">
               <thead>
                 <tr>
+                  <th style="width: 40px;">
+                    <input type="checkbox" id="res-select-header" title="Seleccionar todas las reservas">
+                  </th>
                   <th>ID</th>
                   <th>Habitación</th>
                   <th>Cliente</th>

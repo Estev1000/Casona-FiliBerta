@@ -506,3 +506,15 @@ td:last-child {
         padding: 1.5rem;
     }
 }
+
+/* Checkboxes Styling */
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--primary);
+}
+
+input[type="checkbox"]:hover {
+    accent-color: var(--primary-hover);
+}

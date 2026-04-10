@@ -103,7 +103,7 @@
         const tbody = document.querySelector('#reservations-table tbody');
         tbody.innerHTML = '';
         if (reservations.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; opacity:0.5; padding: 2rem;">No hay reservas registradas</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; opacity:0.5; padding: 2rem;">No hay reservas registradas</td></tr>';
             return;
         }
         reservations.forEach(res => {
@@ -111,6 +111,9 @@
             const roomLabel = r ? `${r.type} (#${r.id})` : `Hab. ID ${res.roomId}`;
             const tr = document.createElement('tr');
             tr.innerHTML = `
+        <td style="text-align: center; width: 40px;">
+          <input type="checkbox" class="res-checkbox" data-res-id="${res.id}" data-room-id="${res.roomId}" data-client="${res.client}" data-price="${r?.price || 0}">
+        </td>
         <td>${res.id}</td>
         <td>${roomLabel}</td>
         <td><strong>${res.client}</strong></td>
@@ -121,6 +124,28 @@
       `;
             tbody.appendChild(tr);
         });
+        
+        // Setup checkbox selection
+        const checkboxes = document.querySelectorAll('.res-checkbox');
+        const headerCheckbox = document.getElementById('res-select-header');
+        
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', () => {
+                const allChecked = Array.from(checkboxes).every(c => c.checked);
+                const someChecked = Array.from(checkboxes).some(c => c.checked);
+                if (headerCheckbox) {
+                    headerCheckbox.checked = allChecked;
+                    headerCheckbox.indeterminate = someChecked && !allChecked;
+                }
+            });
+        });
+        
+        if (headerCheckbox) {
+            headerCheckbox.addEventListener('change', function() {
+                checkboxes.forEach(cb => cb.checked = this.checked);
+            });
+        }
+        
         document.querySelectorAll('.del-res').forEach(btn => btn.addEventListener('click', e => {
             const id = Number(e.currentTarget.dataset.id);
             reservations = reservations.filter(x => x.id !== id);
@@ -287,6 +312,77 @@
         renderInvoices();
         e.target.reset();
     });
+
+    // Charge Reservations Logic
+    const chargeSelectedReservations = () => {
+        const checkedBoxes = document.querySelectorAll('.res-checkbox:checked');
+        if (checkedBoxes.length === 0) {
+            alert('Por favor, selecciona al menos una reserva para cobrar.');
+            return;
+        }
+
+        checkedBoxes.forEach(checkbox => {
+            const roomId = Number(checkbox.dataset.roomId);
+            const client = checkbox.dataset.client;
+            const room = rooms.find(r => r.id === roomId);
+            
+            if (room) {
+                const description = `Hospedaje - ${room.type} (Cliente: ${client})`;
+                const price = room.price;
+                const qty = 1;
+                
+                invoices.push({ description, qty, price });
+            }
+            
+            // Uncheck the checkbox
+            checkbox.checked = false;
+        });
+
+        saveAll();
+        renderInvoices();
+        
+        // Remove indeterminate state from header
+        const headerCheckbox = document.getElementById('res-select-header');
+        if (headerCheckbox) {
+            headerCheckbox.checked = false;
+            headerCheckbox.indeterminate = false;
+        }
+
+        alert(`${checkedBoxes.length} reserva(s) agregada(s) a facturación.`);
+        
+        // Switch to invoices tab
+        showTab('facturas');
+    };
+
+    // Button event listeners
+    const btnChargeReservations = document.getElementById('btn-charge-reservations');
+    if (btnChargeReservations) {
+        btnChargeReservations.addEventListener('click', chargeSelectedReservations);
+    }
+
+    const btnSelectAll = document.getElementById('btn-select-all-res');
+    if (btnSelectAll) {
+        btnSelectAll.addEventListener('click', () => {
+            document.querySelectorAll('.res-checkbox').forEach(cb => cb.checked = true);
+            const headerCheckbox = document.getElementById('res-select-header');
+            if (headerCheckbox) {
+                headerCheckbox.checked = true;
+                headerCheckbox.indeterminate = false;
+            }
+        });
+    }
+
+    const btnDeselectAll = document.getElementById('btn-deselect-all-res');
+    if (btnDeselectAll) {
+        btnDeselectAll.addEventListener('click', () => {
+            document.querySelectorAll('.res-checkbox').forEach(cb => cb.checked = false);
+            const headerCheckbox = document.getElementById('res-select-header');
+            if (headerCheckbox) {
+                headerCheckbox.checked = false;
+                headerCheckbox.indeterminate = false;
+            }
+        });
+    }
 
     // Tabs / Navigation
     const showTab = (name) => {
