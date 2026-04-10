@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casona FiliBerta - Sistema de Gestión Hotelera Ultra Premium</title>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Icons -->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="logo">
+        <i class='bx bxs-hotel'></i>
+        <div style="display: flex; flex-direction: column;">
+          <span>Casona FiliBerta</span>
+          <small id="hotel-name-sidebar"
+            style="font-size: 0.7rem; color: var(--text-muted); font-weight: 400; margin-top: -5px;">Casona FiliBerta</small>
+        </div>
+      </div>
+
+      <ul class="nav-links">
+        <li>
+          <button data-tab="dashboard" class="tabbtn active">
+            <i class='bx bxs-grid-alt'></i>
+            <span>Dashboard</span>
+          </button>
+        </li>
+        <li>
+          <button data-tab="habitaciones" class="tabbtn">
+            <i class='bx bxs-bed'></i>
+            <span>Habitaciones</span>
+          </button>
+        </li>
+        <li>
+          <button data-tab="reservas" class="tabbtn">
+            <i class='bx bxs-calendar-check'></i>
+            <span>Reservas</span>
+          </button>
+        </li>
+        <li>
+          <button data-tab="facturas" class="tabbtn">
+            <i class='bx bxs-receipt'></i>
+            <span>Facturación</span>
+          </button>
+        </li>
+        <li>
+          <button data-tab="reportes" class="tabbtn">
+            <i class='bx bxs-chart'></i>
+            <span>Reportes</span>
+          </button>
+        </li>
+      </ul>
+
+      <div class="user-badge" style="margin-top: auto;">
+        <img src="https://ui-avatars.com/api/?name=Admin+User&background=8b5cf6&color=ffffff" alt="User">
+        <div class="user-info">
+          <span class="user-name">Gerente General</span>
+          <span class="user-status"><i class='bx bxs-circle'></i> En línea</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header Section -->
+      <header class="content-header">
+        <div class="header-info">
+          <div class="hotel-brand-tag">
+            <i class='bx bxs-castle'></i>
+            <span id="hotel-name-header">Casona FiliBerta</span>
+          </div>
+          <h1 id="view-title">Dashboard Principal</h1>
+          <p id="view-subtitle">Resumen operativo y estado del hotel.</p>
+        </div>
+        <div class="header-actions">
+          <div class="user-badge">
+            <i class='bx bx-bell' style="font-size: 1.2rem; cursor: pointer;"></i>
+            <span id="current-date" style="margin-left: 10px; opacity: 0.7;">Lunes, 5 de Enero</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dashboard View -->
+      <section id="dashboard" class="tab-content active">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon blue">
+              <i class='bx bxs-door-open'></i>
+            </div>
+            <div class="stat-value" id="stat-total-rooms">0</div>
+            <div class="stat-label">Total Habitaciones</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple">
+              <i class='bx bxs-bookmark-star'></i>
+            </div>
+            <div class="stat-value" id="stat-active-reservations">0</div>
+            <div class="stat-label">Reservas Activas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">
+              <i class='bx bxs-wallet'></i>
+            </div>
+            <div class="stat-value" id="stat-total-revenue">$0.00</div>
+            <div class="stat-label">Ingresos del Mes</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title"><i class='bx bxs-time'></i> Actividad Reciente</h3>
+          <div class="table-container">
+            <table id="recent-activity-table">
+              <thead>
+                <tr>
+                  <th>Corte</th>
+                  <th>Detalle</th>
+                  <th>Fecha</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Dashboard content will be updated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Habitaciones View -->
+      <section id="habitaciones" class="tab-content">
+        <div class="card">
+          <h3 class="card-title"><i class='bx bx-plus-circle'></i> Registrar Nueva Habitación</h3>
+          <form id="form-new-room">
+            <div class="form-grid">
+              <div class="input-group">
+                <label>Tipo de Habitación</label>
+                <input type="text" id="room-type" placeholder="Ej: Suite Deluxe" required />
+              </div>
+              <div class="input-group">
+                <label>Capacidad (Pers.)</label>
+                <input type="number" id="room-capacity" placeholder="2" min="1" required />
+              </div>
+              <div class="input-group">
+                <label>Precio / Noche</label>
+                <input type="number" id="room-price" placeholder="120.00" min="0" step="0.01" required />
+              </div>
+            </div>
+            <button type="submit" class="primary-btn"><i class='bx bx-save'></i> Agregar Habitación</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title"><i class='bx bx-list-ul'></i> Inventario de Habitaciones</h3>
+          <div class="table-container">
+            <table id="rooms-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tipo</th>
+                  <th>Capacidad</th>
+                  <th>Precio/Noche</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Reservas View -->
+      <section id="reservas" class="tab-content">
+        <div class="card">
+          <h3 class="card-title"><i class='bx bx-calendar-plus'></i> Nueva Reserva</h3>
+          <form id="form-new-reservation">
+            <div class="form-grid">
+              <div class="input-group">
+                <label>Habitación</label>
+                <select id="reserve-room" required>
+                  <option value="">Seleccionar...</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>Nombre del Cliente</label>
+                <input type="text" id="reserve-client" placeholder="Juan Pérez" required />
+              </div>
+              <div class="input-group">
+                <label>Check-In</label>
+                <input type="date" id="reserve-checkin" required />
+              </div>
+              <div class="input-group">
+                <label>Check-Out</label>
+                <input type="date" id="reserve-checkout" required />
+              </div>
+              <div class="input-group">
+                <label>Estado</label>
+                <select id="reserve-status">
+                  <option value="confirmada">Confirmada</option>
+                  <option value="pendiente">Pendiente</option>
+                  <option value="cancelada">Cancelada</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="primary-btn"><i class='bx bx-check-circle'></i> Crear Reserva</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title"><i class='bx bx-calendar-event'></i> Listado de Reservas</h3>
+          <div class="table-container">
+            <table id="reservations-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Habitación</th>
+                  <th>Cliente</th>
+                  <th>Check-in</th>
+                  <th>Check-out</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Facturas View -->
+      <section id="facturas" class="tab-content">
+        <div class="card">
+          <h3 class="card-title"><i class='bx bx-cart-add'></i> Detalle de Facturación</h3>
+          <form id="form-new-invoice">
+            <div class="form-grid">
+              <div class="input-group">
+                <label>Concepto / Servicio</label>
+                <input type="text" id="inv-desc" placeholder="Hospedaje 3 noches, Bar..." required />
+              </div>
+              <div class="input-group">
+                <label>Cantidad</label>
+                <input type="number" id="inv-qty" placeholder="1" min="1" required />
+              </div>
+              <div class="input-group">
+                <label>Precio Unitario</label>
+                <input type="number" id="inv-price" placeholder="0.00" min="0" step="0.01" required />
+              </div>
+            </div>
+            <button type="submit" class="primary-btn"><i class='bx bx-plus'></i> Añadir Ítem</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="table-container">
+            <table id="invoices-table">
+              <thead>
+                <tr>
+                  <th>Concepto</th>
+                  <th>Cantidad</th>
+                  <th>Precio</th>
+                  <th>Subtotal</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div style="margin-top: 2rem; display: flex; justify-content: flex-end; align-items: center; gap: 20px;">
+            <span style="color: var(--text-muted); font-weight: 500;">TOTAL A PAGAR:</span>
+            <span style="font-size: 2rem; font-weight: 700; color: var(--primary);" id="invoice-total">$0.00</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Reportes View -->
+      <section id="reportes" class="tab-content">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon blue">
+              <i class='bx bxs-user-detail'></i>
+            </div>
+            <div class="stat-value">85%</div>
+            <div class="stat-label">Ocupación Mensual</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">
+              <i class='bx bxs-trending-up'></i>
+            </div>
+            <div class="stat-value">$1,250.00</div>
+            <div class="stat-label">Ticket Promedio</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple">
+              <i class='bx bxs-time-five'></i>
+            </div>
+            <div class="stat-value">12:00 PM</div>
+            <div class="stat-label">Hora Pico Check-in</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title"><i class='bx bxs-report'></i> Resumen de Operaciones</h3>
+          <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Visualiza el rendimiento de tu hotel en tiempo
+            real.</p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="report-box"
+              style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+              <h4 style="margin-bottom: 15px;">Habitaciones más Populares</h4>
+              <ul style="list-style: none; padding: 0;">
+                <li
+                  style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                  <span>Suite Deluxe</span>
+                  <span style="color: var(--accent-success); font-weight: 600;">12 Reservas</span>
+                </li>
+                <li
+                  style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                  <span>Habitación Doble</span>
+                  <span style="color: var(--accent-success); font-weight: 600;">8 Reservas</span>
+                </li>
+                <li style="display: flex; justify-content: space-between; padding: 8px 0;">
+                  <span>Suite Junior</span>
+                  <span style="color: var(--accent-success); font-weight: 600;">5 Reservas</span>
+                </li>
+              </ul>
+            </div>
+            <div class="report-box"
+              style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+              <h4 style="margin-bottom: 15px;">Proyección de Ingresos</h4>
+              <div style="height: 120px; display: flex; align-items: flex-end; gap: 10px; padding-bottom: 10px;">
+                <div style="flex: 1; height: 40%; background: var(--primary); border-radius: 4px; opacity: 0.6;"></div>
+                <div style="flex: 1; height: 60%; background: var(--primary); border-radius: 4px; opacity: 0.8;"></div>
+                <div style="flex: 1; height: 90%; background: var(--primary); border-radius: 4px;"></div>
+                <div style="flex: 1; height: 30%; background: var(--primary); border-radius: 4px; opacity: 0.4;"></div>
+              </div>
+              <div
+                style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">
+                <span>Semana 1</span>
+                <span>Semana 2</span>
+                <span>Semana 3</span>
+                <span>Semana 4</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+
+</html>
